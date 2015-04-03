@@ -4,88 +4,9 @@
     <meta charset="UTF-8">
     <title>Snake Game</title>
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Titillium Web">
-
-    <style>
-        .header{
-            text-align: center;
-        }
-        body {
-            font-family: 'Titillium Web', sans-serif;
-
-        }
-        div.container{
-            width:500px;
-            margin-left: 25%;
-            height:500px;
-            border:1px solid black;
-            z-index: -10;
-            position:relative;
-        }
-        div.snake{
-
-            top:200px;
-            left:200px;
-            position:absolute;
-        }
+    <link rel="stylesheet" type="text/css" href="GameStyles.css">
 
 
-
-        div.snakesquare{
-            width:20px;
-            height:20px;
-            background:black;
-            z-index: 10;
-            margin:1px;
-
-        }
-        div.food{
-            position:relative;
-            width:22px;
-            height:22px;
-            background:white;
-            z-index: 10;
-            left:230px;
-            top:200px;
-        }
-        div.square1{
-            position:absolute;
-            background:black;
-            width:35%;
-            height:35%;
-            z-index: 1000;
-            top:35%;
-
-        }
-        div.square2{
-            position:absolute;
-            background:black;
-            width:35%;
-            height:35%;
-            z-index: 1000;
-            top:35%;
-            left:70%;
-
-        }
-        div.square3{
-            position:absolute;
-            background:black;
-            width:35%;
-            height:35%;
-            z-index: 1000;
-            left:35%;
-
-        }
-        div.square4{
-            position:absolute;
-            background:black;
-            width:35%;
-            height:35%;
-            z-index: 1000;
-            top:70%;
-            left:35%
-
-        }
-    </style>
 
 </head>
 
@@ -120,30 +41,7 @@
 
     </div>
 
-    <script>
-        var game =document.querySelector('div.container');
-        var snake = document.querySelector('div.snake');
-
-        function createElement(type, classname, parent){
-            var elem = document.createElement(type);
-            elem.className=classname;
-            parent.appendChild(elem);
-            return elem;
-        }
-        function createFood(){
-            var food = createElement('div', 'food', game);
-            createElement('div', 'square1', food);
-            createElement('div', 'square2', food);
-            createElement('div', 'square3', food);
-            createElement('div', 'square4', food);
-
-        }
-        function addTail(){
-            createElement('div','snakesquare', snake);
-
-        }
-        addTail();
-        addTail();
+    <script src="SnakeGame.js">
 
     </script>
  </body>
