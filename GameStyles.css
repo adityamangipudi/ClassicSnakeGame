@@ -7,28 +7,26 @@ body {
 
 }
 div.container{
-    width:500px;
+    width:550px;
     margin-left: 200px;
-    height:500px;
+    height:550px;
     border:1px solid black;
     z-index: -10;
     position:relative;
 }
-div.snake{
 
-    top:200px;
-    left:200px;
-    position:absolute;
-}
+
 
 
 
 div.snakesquare{
-    width:20px;
-    height:20px;
+    width:22px;
+    height:22px;
     background:black;
     z-index: 10;
-    margin:1px;
+    border: 1px solid white;
+    box-sizing: border-box;
+    position:absolute;
 
 }
 div.food{
@@ -37,8 +35,10 @@ div.food{
     height:22px;
     background:white;
     z-index: 10;
-    left:230px;
-    top:200px;
+    left:200px;
+    top:180px;
+    border: 1px solid white;
+    box-sizing: border-box;
 }
 div.square1{
     position:absolute;
