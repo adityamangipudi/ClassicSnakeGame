@@ -4,7 +4,6 @@
  */
     //function to create an element
     function createElement(type, classname, parent){
-    console.log('herer')
         var elem = document.createElement(type);
         elem.className=classname;
         parent.appendChild(elem);
@@ -18,17 +17,9 @@ var snakediv = document.querySelector('div.snake')
 
 
     //create's a food square
-    function createFood(){
-        var food = createElement('div', 'food', game);
-        createElement('div', 'square1', food);
-        createElement('div', 'square2', food);
-        createElement('div', 'square3', food);
-        createElement('div', 'square4', food);
 
 
-    }
-
-
+var food;
 
 var gameTop=document.querySelector('div.container').offsetTop;
 
@@ -55,7 +46,7 @@ Snake.prototype.addTail = function(){
     //console.log(this.div)
     //console.log('here')
 
-    createElement('div','snakesquare', this.div);
+    return createElement('div','snakesquare', this.div);
 
 };
 Snake.prototype.setSnakeLength= function(){
@@ -75,6 +66,9 @@ Snake.prototype.setPosition = function(){
         x.style.left= ;
     })*/
 }
+Snake.prototype.stopMovement=function(){
+    window.removeEventListener("keydown", keyFunction);
+}
 Snake.prototype.start = function(){
     inter = setInterval(function () {
         console.log(this.snake.setSnakeBody())
@@ -90,10 +84,20 @@ Snake.prototype.start = function(){
             //console.log(this.snake.div.left)
            // Array.prototype.unshift.call(this.snake.snbody, node);
             //var node = this.snake.div.
+            if(node.style.top===food.offsetTop+'px'&&node.style.left===food.offsetLeft+'px'){
+            this.snake.eatFood();
+        }
+            Array.prototype.forEach.call(this.snake.snbody, function(x){
+                if(node.style.top===x.offsetTop +'px'&&node.style.left===x.offsetLeft +'px'){
+                    this.snake.stopMovement()
+                    clearInterval(inter)
+                }
+            })
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
 
         }
         else{
+            this.snake.stopMovement()
             clearInterval(inter)
 
         }
@@ -115,10 +119,20 @@ Snake.prototype.moveUp = function(){
             //console.log(this.snake.div.left)
             // Array.prototype.unshift.call(this.snake.snbody, node);
             //var node = this.snake.div.
+            if(node.style.top===food.offsetTop+'px'&&node.style.left===food.offsetLeft+'px'){
+                this.snake.eatFood();
+            }
+            Array.prototype.forEach.call(this.snake.snbody, function(x){
+                if(node.style.top===x.offsetTop +'px'&&node.style.left===x.offsetLeft +'px'){
+                    this.snake.stopMovement()
+                    clearInterval(inter)
+                }
+            })
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
 
         }
         else{
+            this.snake.stopMovement()
             clearInterval(inter)
         }
     }, 500);
@@ -139,10 +153,20 @@ Snake.prototype.moveDown = function(){
             //console.log(this.snake.div.left)
             // Array.prototype.unshift.call(this.snake.snbody, node);
             //var node = this.snake.div.
+            if(node.style.top===food.offsetTop+'px'&&node.style.left===food.offsetLeft+'px'){
+                this.snake.eatFood();
+            }
+            Array.prototype.forEach.call(this.snake.snbody, function(x){
+                if(node.style.top===x.offsetTop +'px'&&node.style.left===x.offsetLeft +'px'){
+                    this.snake.stopMovement()
+                    clearInterval(inter)
+                }
+            })
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
 
         }
         else{
+            this.snake.stopMovement()
             clearInterval(inter)
         }
     }, 500);
@@ -163,10 +187,22 @@ Snake.prototype.moveLeft = function(){
             //console.log(this.snake.div.left)
             // Array.prototype.unshift.call(this.snake.snbody, node);
             //var node = this.snake.div.
+            console.log('eatFood top',node.offsetTop, food.offsetTop, 'left', node.offsetLeft, food.offsetLeft)
+
+            if(node.style.top===food.offsetTop+'px'&&node.style.left===food.offsetLeft+'px'){
+                this.snake.eatFood();
+            }
+            Array.prototype.forEach.call(this.snake.snbody, function(x){
+                if(node.style.top===x.offsetTop +'px'&&node.style.left===x.offsetLeft +'px'){
+                    this.snake.stopMovement()
+                    clearInterval(inter)
+                }
+            })
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
 
         }
         else{
+            this.snake.stopMovement()
             clearInterval(inter)
         }
     }, 500);
@@ -187,61 +223,106 @@ Snake.prototype.moveRight = function(){
             //console.log(this.snake.div.left)
             // Array.prototype.unshift.call(this.snake.snbody, node);
             //var node = this.snake.div.
+
+
+            if(node.style.top===food.offsetTop+'px'&&node.style.left===food.offsetLeft+'px'){
+                this.snake.eatFood();
+            }
+            Array.prototype.forEach.call(this.snake.snbody, function(x){
+                if(node.style.top===x.offsetTop +'px'&&node.style.left===x.offsetLeft +'px'){
+                    this.snake.stopMovement()
+                    clearInterval(inter)
+                }
+            })
+
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
+
 
         }
         else{
+            this.snake.stopMovement()
             clearInterval(inter)
         }
     }, 500);
 }
+Snake.prototype.createFood =function(){
+    food= createElement('div', 'food', document.querySelector('div.container'));
+    createElement('div', 'square1', food);
+    createElement('div', 'square2', food);
+    createElement('div', 'square3', food);
+    createElement('div', 'square4', food);
 
+    food.style.top = (Math.floor(Math.random()*24)+1)*22+'px'
+    food.style.left = (Math.floor(Math.random()*24)+1)*22+'px'
+}
+Snake.prototype.eatFood = function(){
+    console.log('eatFood')
+    food.remove()
+    var tail =snake.addTail()
+    switch(direction){
+        case 0:
+            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop +22+'px'
+            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft +'px'
+            break;
+        case 1:
+            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop -22+'px'
+            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft +'px'
+            break;
+        case 2:
+            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop +'px'
+            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft -22+'px'
+            break;
+        case 3:
+            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop +'px'
+            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft+22 +'px'
+            break;
+    }
+    snake.createFood()
+}
 
 var snake  = new Snake(null, document.querySelectorAll('div.snakesquare'), snakediv)
 snake.addTail()
 snake.addTail()
 snake.addTail()
-snake.addTail()
-snake.addTail()
 snake.setPosition()
-
+snake.createFood()
 
 
 var fired=false;
+function keyFunction(event) {
 
+    //if already started
+    if (fired === false) {
+
+        snake.start();
+        fired = true;
+    }
+
+    //left -- direction =3
+    if (event.keyCode === 37 && fired === true && direction!=2) {
+        direction=3;
+        snake.moveLeft()
+    }
+    //right -- direction =2
+    if (event.keyCode === 39 && fired === true && direction!=3) {
+        direction=2;
+        snake.moveRight()
+    }
+    //up direction =0
+    if (event.keyCode === 38 && fired === true && direction!=1) {
+        direction=0;
+        snake.moveUp()
+    }
+    //down direction =1
+    if (event.keyCode === 40 && fired === true && direction!=0) {
+        direction=1;
+        snake.moveDown()
+    }
+
+
+}
 function movement() {
     //key presses
-    window.addEventListener("keydown", function (event) {
-
-        //if already started
-        if (fired === false) {
-
-            snake.start();
-            fired = true;
-        }
-
-        //left -- direction =3
-        if (event.keyCode === 37 && fired === true && direction!=2) {
-            direction=3;
-            snake.moveLeft()
-        }
-        //right -- direction =2
-        if (event.keyCode === 39 && fired === true && direction!=3) {
-            direction=2;
-            snake.moveRight()
-        }
-        //up direction =0
-        if (event.keyCode === 38 && fired === true && direction!=1) {
-            direction=0;
-            snake.moveUp()
-        }
-        //down direction =1
-        if (event.keyCode === 40 && fired === true && direction!=0) {
-            direction=1;
-            snake.moveDown()
-        }
-
-
-    });
+    window.addEventListener("keydown", keyFunction );
 }
 movement();
