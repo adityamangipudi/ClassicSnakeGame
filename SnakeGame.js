@@ -10,7 +10,8 @@
         parent.appendChild(elem);
         return elem;
     }
-
+var inter;
+var direction=0;
 var snakediv = document.querySelector('div.snake')
 
     //game element
@@ -65,8 +66,8 @@ Snake.prototype.setPosition = function(){
     this.setSnakeBody()
     this.setSnakeLength()
     for(var i =0; i< snake.snakeLength;i++){
-        snake.snbody[i].style.top = i*22+66 +'px';
-        snake.snbody[i].style.left = 66+'px';
+        snake.snbody[i].style.top = i*22+352 +'px';
+        snake.snbody[i].style.left = 352+'px';
 
     }
    /* Array.prototype.forEach.call(snake.snbody, function(x){
@@ -80,11 +81,11 @@ Snake.prototype.start = function(){
         console.log(this.snake.setSnakeLength())
 
 
-        if(this.snake.setSnakeLength()>0){
+        if(this.snake.setSnakeLength()>0&& this.snake.snbody[0].offsetTop>0){
             var node = this.snake.div.removeChild(this.snake.snbody[this.snake.snakeLength-1])
             node.style.top = this.snake.snbody[0].offsetTop-22 +'px';
 
-           // node.style.left=
+            node.style.left=this.snake.snbody[0].offsetLeft + 'px';
             //console.log(this.snake.snbody[0].offsetTop)
             //console.log(this.snake.div.left)
            // Array.prototype.unshift.call(this.snake.snbody, node);
@@ -94,18 +95,111 @@ Snake.prototype.start = function(){
         }
         else{
             clearInterval(inter)
+
         }
+    }, 500);
+}
+Snake.prototype.moveUp = function(){
+    clearInterval(inter)
+    inter = setInterval(function () {
+        this.snake.setSnakeBody()
+        this.snake.setSnakeLength()
 
 
+        if(this.snake.setSnakeLength()>0&& this.snake.snbody[0].offsetTop>0){
+            var node = this.snake.div.removeChild(this.snake.snbody[this.snake.snakeLength-1])
+            node.style.top = this.snake.snbody[0].offsetTop-22 +'px';
+
+            node.style.left=this.snake.snbody[0].offsetLeft + 'px';
+            //console.log(this.snake.snbody[0].offsetTop)
+            //console.log(this.snake.div.left)
+            // Array.prototype.unshift.call(this.snake.snbody, node);
+            //var node = this.snake.div.
+            this.snake.div.insertBefore(node, this.snake.snbody[0]);
+
+        }
+        else{
+            clearInterval(inter)
+        }
+    }, 500);
+}
+Snake.prototype.moveDown = function(){
+    clearInterval(inter)
+    inter = setInterval(function () {
+        this.snake.setSnakeBody()
+        this.snake.setSnakeLength()
 
 
+        if(this.snake.setSnakeLength()>0&& this.snake.snbody[0].offsetTop<528){
+            var node = this.snake.div.removeChild(this.snake.snbody[this.snake.snakeLength-1])
+            node.style.top = this.snake.snbody[0].offsetTop+22 +'px';
+
+            node.style.left=this.snake.snbody[0].offsetLeft + 'px';
+            //console.log(this.snake.snbody[0].offsetTop)
+            //console.log(this.snake.div.left)
+            // Array.prototype.unshift.call(this.snake.snbody, node);
+            //var node = this.snake.div.
+            this.snake.div.insertBefore(node, this.snake.snbody[0]);
+
+        }
+        else{
+            clearInterval(inter)
+        }
+    }, 500);
+}
+Snake.prototype.moveLeft = function(){
+    clearInterval(inter)
+    inter = setInterval(function () {
+        this.snake.setSnakeBody()
+        this.snake.setSnakeLength()
 
 
+        if(this.snake.setSnakeLength()>0&& this.snake.snbody[0].offsetLeft>0){
+            var node = this.snake.div.removeChild(this.snake.snbody[this.snake.snakeLength-1])
+            node.style.top = this.snake.snbody[0].offsetTop +'px';
+
+            node.style.left=this.snake.snbody[0].offsetLeft-22 + 'px';
+            //console.log(this.snake.snbody[0].offsetTop)
+            //console.log(this.snake.div.left)
+            // Array.prototype.unshift.call(this.snake.snbody, node);
+            //var node = this.snake.div.
+            this.snake.div.insertBefore(node, this.snake.snbody[0]);
+
+        }
+        else{
+            clearInterval(inter)
+        }
+    }, 500);
+}
+Snake.prototype.moveRight = function(){
+    clearInterval(inter)
+    inter = setInterval(function () {
+        this.snake.setSnakeBody()
+        this.snake.setSnakeLength()
+
+
+        if(this.snake.setSnakeLength()>0&& this.snake.snbody[0].offsetLeft<528){
+            var node = this.snake.div.removeChild(this.snake.snbody[this.snake.snakeLength-1])
+            node.style.top = this.snake.snbody[0].offsetTop +'px';
+
+            node.style.left=this.snake.snbody[0].offsetLeft+22 + 'px';
+            //console.log(this.snake.snbody[0].offsetTop)
+            //console.log(this.snake.div.left)
+            // Array.prototype.unshift.call(this.snake.snbody, node);
+            //var node = this.snake.div.
+            this.snake.div.insertBefore(node, this.snake.snbody[0]);
+
+        }
+        else{
+            clearInterval(inter)
+        }
     }, 500);
 }
 
 
 var snake  = new Snake(null, document.querySelectorAll('div.snakesquare'), snakediv)
+snake.addTail()
+snake.addTail()
 snake.addTail()
 snake.addTail()
 snake.addTail()
@@ -116,7 +210,6 @@ snake.setPosition()
 var fired=false;
 
 function movement() {
-    var inter = null;
     //key presses
     window.addEventListener("keydown", function (event) {
 
@@ -125,26 +218,27 @@ function movement() {
 
             snake.start();
             fired = true;
-        } else {
-
-
         }
 
-        //left
-        if (event.keyCode === 37 && fired === true) {
-
+        //left -- direction =3
+        if (event.keyCode === 37 && fired === true && direction!=2) {
+            direction=3;
+            snake.moveLeft()
         }
-        //right
-        if (event.keyCode === 39 && fired === true) {
-
+        //right -- direction =2
+        if (event.keyCode === 39 && fired === true && direction!=3) {
+            direction=2;
+            snake.moveRight()
         }
-        //up
-        if (event.keyCode === 38 && fired === true) {
-
+        //up direction =0
+        if (event.keyCode === 38 && fired === true && direction!=1) {
+            direction=0;
+            snake.moveUp()
         }
-        //down
-        if (event.keyCode === 40 && fired === true) {
-
+        //down direction =1
+        if (event.keyCode === 40 && fired === true && direction!=0) {
+            direction=1;
+            snake.moveDown()
         }
 
 
