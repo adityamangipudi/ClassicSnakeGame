@@ -129,7 +129,7 @@ Snake.prototype.moveUp = function(){
                 }
             })
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
-
+            direction=0;
         }
         else{
             this.snake.stopMovement()
@@ -163,7 +163,7 @@ Snake.prototype.moveDown = function(){
                 }
             })
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
-
+            direction=1;
         }
         else{
             this.snake.stopMovement()
@@ -187,7 +187,7 @@ Snake.prototype.moveLeft = function(){
             //console.log(this.snake.div.left)
             // Array.prototype.unshift.call(this.snake.snbody, node);
             //var node = this.snake.div.
-            console.log('eatFood top',node.offsetTop, food.offsetTop, 'left', node.offsetLeft, food.offsetLeft)
+           // console.log('eatFood top',node.offsetTop, food.offsetTop, 'left', node.offsetLeft, food.offsetLeft)
 
             if(node.style.top===food.offsetTop+'px'&&node.style.left===food.offsetLeft+'px'){
                 this.snake.eatFood();
@@ -199,7 +199,7 @@ Snake.prototype.moveLeft = function(){
                 }
             })
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
-
+            direction=3;
         }
         else{
             this.snake.stopMovement()
@@ -237,7 +237,7 @@ Snake.prototype.moveRight = function(){
 
             this.snake.div.insertBefore(node, this.snake.snbody[0]);
 
-
+            direction=2;
         }
         else{
             this.snake.stopMovement()
@@ -256,27 +256,29 @@ Snake.prototype.createFood =function(){
     food.style.left = (Math.floor(Math.random()*24)+1)*22+'px'
 }
 Snake.prototype.eatFood = function(){
-    console.log('eatFood')
     food.remove()
+    var lastTop = snake.div.lastChild.offsetTop
+    var lastLeft =snake.div.lastChild.offsetLeft
     var tail =snake.addTail()
     switch(direction){
         case 0:
-            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop +22+'px'
-            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft +'px'
+            tail.style.top = lastTop +22+'px'
+            tail.style.left = lastLeft +'px'
             break;
         case 1:
-            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop -22+'px'
-            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft +'px'
+            tail.style.top = lastTop -22+'px'
+            tail.style.left = lastLeft +'px'
             break;
         case 2:
-            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop +'px'
-            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft -22+'px'
+            tail.style.top = lastTop +'px'
+            tail.style.left = lastLeft -22+'px'
             break;
         case 3:
-            tail.style.top = this.snbody[this.snakeLength-1].style.offsetTop +'px'
-            tail.style.left = this.snbody[this.snakeLength-1].style.offsetLeft+22 +'px'
+            tail.style.top = lastTop +'px'
+            tail.style.left = lastLeft +22 +'px'
             break;
     }
+
     snake.createFood()
 }
 
@@ -300,22 +302,22 @@ function keyFunction(event) {
 
     //left -- direction =3
     if (event.keyCode === 37 && fired === true && direction!=2) {
-        direction=3;
+
         snake.moveLeft()
     }
     //right -- direction =2
     if (event.keyCode === 39 && fired === true && direction!=3) {
-        direction=2;
+
         snake.moveRight()
     }
     //up direction =0
     if (event.keyCode === 38 && fired === true && direction!=1) {
-        direction=0;
+
         snake.moveUp()
     }
     //down direction =1
     if (event.keyCode === 40 && fired === true && direction!=0) {
-        direction=1;
+
         snake.moveDown()
     }
 
